@@ -16,6 +16,7 @@ import charlie.util.Play;
 public class Advisor implements IAdvisor{
     @Override
     public Play advise(Hand myHand,Card upCard){
-        return ;
+        Play advice = Play.NONE;
+        return advice;
     };
 }

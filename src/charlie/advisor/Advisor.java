@@ -28,9 +28,9 @@ public class Advisor implements IAdvisor{
     */
     
     public void createTables(){ 
-        if(pairTable == null){
+        if(totalTable == null){
             //create pair table
-            pairTable = new HashMap<>();
+            totalTable = new HashMap<>();
             
             //fill with values
             Play[] twenty = {Play.NONE,Play.STAY,  Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY};
@@ -50,22 +50,22 @@ public class Advisor implements IAdvisor{
             Play[] six = {Play.NONE,Play.HIT,  Play.HIT, Play.HIT, Play.HIT, Play.HIT, Play.HIT, Play.HIT, Play.HIT, Play.HIT, Play.HIT, Play.HIT};
             Play[] five = {Play.NONE,Play.HIT, Play.HIT, Play.HIT, Play.HIT, Play.HIT, Play.HIT, Play.HIT, Play.HIT, Play.HIT, Play.HIT, Play.HIT};
             
-            pairTable.put(5,five);
-            pairTable.put(6,six);
-            pairTable.put(7,seven);
-            pairTable.put(8,eight);
-            pairTable.put(9,nine);
-            pairTable.put(10,ten);
-            pairTable.put(11,eleven);
-            pairTable.put(12,twelve);
-            pairTable.put(13,thirteen);
-            pairTable.put(14,fourteen);
-            pairTable.put(15,fifteen);
-            pairTable.put(16,sixteen);
-            pairTable.put(17,seventeen);
-            pairTable.put(18,eightteen);
-            pairTable.put(19,nineteen);
-            pairTable.put(20,twenty);
+            totalTable.put(5,five);
+            totalTable.put(6,six);
+            totalTable.put(7,seven);
+            totalTable.put(8,eight);
+            totalTable.put(9,nine);
+            totalTable.put(10,ten);
+            totalTable.put(11,eleven);
+            totalTable.put(12,twelve);
+            totalTable.put(13,thirteen);
+            totalTable.put(14,fourteen);
+            totalTable.put(15,fifteen);
+            totalTable.put(16,sixteen);
+            totalTable.put(17,seventeen);
+            totalTable.put(18,eightteen);
+            totalTable.put(19,nineteen);
+            totalTable.put(20,twenty);
         }
         
         if(aceTable == null){
@@ -94,9 +94,9 @@ public class Advisor implements IAdvisor{
             aceTable.put(10,aTen);
         }
         
-        if(totalTable == null){
+        if(pairTable == null){
             //create total Table
-            totalTable = new HashMap<>();
+            pairTable = new HashMap<>();
             
             //fill with values            
             Play[] cAce = {Play.NONE, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.SPLIT};
@@ -110,17 +110,17 @@ public class Advisor implements IAdvisor{
             Play[] cThree = {Play.NONE, Play.HIT, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.HIT, Play.HIT, Play.HIT, Play.HIT};
             Play[] cTwo = {Play.NONE, Play.HIT, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.HIT, Play.HIT, Play.HIT, Play.HIT};
         
-            aceTable.put(1,cAce);
-            aceTable.put(2,cTwo);
-            aceTable.put(3,cThree);
-            aceTable.put(4,cFour);    
-            aceTable.put(5,cFive);
-            aceTable.put(6,cSix);
-            aceTable.put(7,cSeven);
-            aceTable.put(8,cEight);
-            aceTable.put(9,cNine);
-            aceTable.put(10,cTen);
-            aceTable.put(11,cAce);
+            pairTable.put(1,cAce);
+            pairTable.put(2,cTwo);
+            pairTable.put(3,cThree);
+            pairTable.put(4,cFour);    
+            pairTable.put(5,cFive);
+            pairTable.put(6,cSix);
+            pairTable.put(7,cSeven);
+            pairTable.put(8,cEight);
+            pairTable.put(9,cNine);
+            pairTable.put(10,cTen);
+            pairTable.put(11,cAce);
         }        
     }
    

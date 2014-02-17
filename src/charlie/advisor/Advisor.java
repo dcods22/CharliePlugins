@@ -24,14 +24,26 @@ public class Advisor implements IAdvisor{
         Play advice;
         
         if(myHand.isPair()){
-           //pair hash table
+            int value = cardOne.value();
+            //lookup is value since both cards are the same
+            //pair hash table
             advice = Play.NONE;
         }
-        else if(cardOne.isAce() || cardTwo.isAce()){
+        else if(cardOne.isAce()){
+            int value = cardTwo.value();
             //ace hash table
-            advice = Play.NONE;
+            //key is value because its other card besides ace
+            advice = Play.NONE;        
+        }
+        else if(cardTwo.isAce()){
+            int value = cardOne.value();
+            //ace hash table
+            //key is value because its other card besides ace
+            advice = Play.NONE;          
         }else{
+            int total = cardOne.value() + cardTwo.value();
             //total number hash table
+            //key is total since its the amount
             advice = Play.NONE;
         }
             

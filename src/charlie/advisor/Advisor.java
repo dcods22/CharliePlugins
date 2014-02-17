@@ -9,7 +9,8 @@ import charlie.card.Card;
 import charlie.card.Hand;
 import charlie.plugin.IAdvisor;
 import charlie.util.Play;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class to give advice on what Black Jack move to make
@@ -18,9 +19,9 @@ import java.util.Hashtable;
 
 
 public class Advisor implements IAdvisor{
-    Hashtable<Integer, Play[]> pairTable;
-    Hashtable<Integer, Play[]> aceTable;
-    Hashtable<Integer, Play[]> totalTable;
+    Map<Integer, Play[]> pairTable;
+    Map<Integer, Play[]> aceTable;
+    Map<Integer, Play[]> totalTable;
     /*
     *   hashtable of arrayLists where arrayList 
     *   index is based on dealers upCard
@@ -29,6 +30,9 @@ public class Advisor implements IAdvisor{
     public void createTables(){ 
         if(pairTable == null){
             //create pair table
+            pairTable = new HashMap<>();
+            
+            //fill with values
             Play[] twenty = {Play.NONE,Play.STAY,  Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY};
             Play[] nineteen= {Play.NONE,Play.STAY,  Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY};
             Play[] eightteen = {Play.NONE,Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY};
@@ -66,6 +70,9 @@ public class Advisor implements IAdvisor{
         
         if(aceTable == null){
             //create ace table
+            aceTable = new HashMap<>();
+            
+            //fill with values
             Play[] aTen = {Play.NONE, Play.STAY,  Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY};
             Play[] aNine = {Play.NONE,Play.HIT,  Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY};
             Play[] aEight = {Play.NONE,Play.HIT,  Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY};
@@ -89,6 +96,9 @@ public class Advisor implements IAdvisor{
         
         if(totalTable == null){
             //create total Table
+            totalTable = new HashMap<>();
+            
+            //fill with values            
             Play[] cAce = {Play.NONE, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.SPLIT};
             Play[] cTen = {Play.NONE, Play.STAY,  Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY, Play.STAY};
             Play[] cNine = {Play.NONE, Play.STAY, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.SPLIT, Play.STAY, Play.SPLIT, Play.SPLIT, Play.STAY, Play.STAY};
@@ -126,28 +136,27 @@ public class Advisor implements IAdvisor{
         if(myHand.isPair()){
             //lookup is value since both cards are the same
             //pair hash table
-            
-            int value = cardOne.value();
+            Integer value = cardOne.value();
             playArray = pairTable.get(value);
             advice = playArray[secondValue];
         }
         else if(cardOne.isAce()){
             //ace hash table
             //key is value because its other card besides ace
-            int value = cardTwo.value();
+            Integer value = cardTwo.value();
             playArray = aceTable.get(value);
             advice = playArray[secondValue];        
         }
         else if(cardTwo.isAce()){
             //ace hash table
             //key is value because its other card besides ace
-            int value = cardOne.value();
+            Integer value = cardOne.value();
             playArray = aceTable.get(value);
             advice = playArray[secondValue];         
         }else{
             //total number hash table
             //key is total since its the amount
-            int total = cardOne.value() + cardTwo.value();
+            Integer total = cardOne.value() + cardTwo.value();
             playArray = totalTable.get(total);
             advice = playArray[secondValue];
         }

@@ -15,12 +15,18 @@ import charlie.util.Play;
  * @author Dan
  */
 
+
 public class Advisor implements IAdvisor{
     
+    /*
+    *   hashtable of arrayLists where arrayList 
+    *   index is based on dealers upCard
+    */
     @Override
     public Play advise(Hand myHand, Card upCard){
         Card cardOne = myHand.getCard(0);
         Card cardTwo = myHand.getCard(1);
+        int secondValue = upCard.value();
         Play advice;
         
         if(myHand.isPair()){

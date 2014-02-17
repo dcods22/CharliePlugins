@@ -14,20 +14,21 @@ import java.util.Map;
 
 /**
  * Class to give advice on what Black Jack move to make
- * @author Dan
+ * @author Dan Cody
  */
-
-
 public class Advisor implements IAdvisor{
+    //three maps for the advice
     Map<Integer, Play[]> pairTable;
     Map<Integer, Play[]> aceTable;
     Map<Integer, Play[]> totalTable;
-    /*
-    *   hashtable of arrayLists where arrayList 
-    *   index is based on dealers upCard
-    */
     
+    /**
+     * Method to create the tables of advice for Black Jack
+     * Done with a singleton design pattern to check if the tables already exist
+     * so only one copy is made of each
+     */
     public void createTables(){ 
+        //check to make sure total table does not already exists
         if(totalTable == null){
             //create pair table
             totalTable = new HashMap<>();
@@ -68,6 +69,7 @@ public class Advisor implements IAdvisor{
             totalTable.put(20,twenty);
         }
         
+        //check to make sure ace table does not already exists
         if(aceTable == null){
             //create ace table
             aceTable = new HashMap<>();
@@ -94,6 +96,7 @@ public class Advisor implements IAdvisor{
             aceTable.put(10,aTen);
         }
         
+        //check to make sure pair table does not already exist
         if(pairTable == null){
             //create total Table
             pairTable = new HashMap<>();
@@ -124,13 +127,24 @@ public class Advisor implements IAdvisor{
         }        
     }
    
+    /**
+     * Method to return the advice on which Black Jack move to make
+     * @param myHand hand you currently have
+     * @param upCard the dealers upcard
+     * @return Play enum of which move to make
+     */
     @Override
     public Play advise(Hand myHand, Card upCard){
+        //check to make sure tables are created
         createTables();
+        //initial values of card sin the hand
         Card cardOne = myHand.getCard(0);
         Card cardTwo = myHand.getCard(1);
+        //dealer card value
         int secondValue = upCard.value();
+        //array of the advices
         Play[] playArray;
+        //the actual advice
         Play advice;
         
         if(myHand.size() == 2){
@@ -162,26 +176,42 @@ public class Advisor implements IAdvisor{
                 advice = playArray[secondValue];
             }   
         }else if(myHand.size() == 3){
+            //get next card value
             Card cardThree = myHand.getCard(2);
+            //find advice based on total
             Integer total = cardOne.value() + cardTwo.value() + cardThree.value();
             playArray = totalTable.get(total);
             advice = playArray[secondValue];
         }else if(myHand.size() == 4){
+            //get next two card values
             Card cardThree = myHand.getCard(2);
             Card cardFour = myHand.getCard(3);
+            //find advice based on total
             Integer total = cardOne.value() + cardTwo.value() + cardThree.value() + cardFour.value();
             playArray = totalTable.get(total);
             advice = playArray[secondValue];
         }else if(myHand.size() == 5){
+            //get next three card values
             Card cardThree = myHand.getCard(2);
             Card cardFour = myHand.getCard(3);
             Card cardFive = myHand.getCard(4);
+            //find advice based on total
             Integer total = cardOne.value() + cardTwo.value() + cardThree.value() + cardFour.value()  + cardFive.value();
+            playArray = totalTable.get(total);
+            advice = playArray[secondValue];
+        }else{
+            //extra case just incase of 6 card charlie and advice
+            Card cardThree = myHand.getCard(2);
+            Card cardFour = myHand.getCard(3);
+            Card cardFive = myHand.getCard(4);
+            Card cardSix= myHand.getCard(5);
+            //get advice based on totals
+            Integer total = cardOne.value() + cardTwo.value() + cardThree.value() + cardFour.value()  + cardFive.value() + cardSix.value();
             playArray = totalTable.get(total);
             advice = playArray[secondValue];
         }
            
-            
+        //return the advice
         return advice;
     };
     

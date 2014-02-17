@@ -166,10 +166,17 @@ public class Advisor implements IAdvisor{
             Integer total = cardOne.value() + cardTwo.value() + cardThree.value();
             playArray = totalTable.get(total);
             advice = playArray[secondValue];
-        }else{
+        }else if(myHand.size() == 4){
             Card cardThree = myHand.getCard(2);
             Card cardFour = myHand.getCard(3);
             Integer total = cardOne.value() + cardTwo.value() + cardThree.value() + cardFour.value();
+            playArray = totalTable.get(total);
+            advice = playArray[secondValue];
+        }else if(myHand.size() == 5){
+            Card cardThree = myHand.getCard(2);
+            Card cardFour = myHand.getCard(3);
+            Card cardFive = myHand.getCard(4);
+            Integer total = cardOne.value() + cardTwo.value() + cardThree.value() + cardFour.value()  + cardFive.value();
             playArray = totalTable.get(total);
             advice = playArray[secondValue];
         }

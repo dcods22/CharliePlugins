@@ -24,15 +24,23 @@ public class Test00_1217_26 {
 // TODO add test methods here
     @Test 
     public void testAdvice(){
-        Hand myHand = new Hand(new Hid(Seat.YOU));
-        Card cardOne = new Card(10, Suit.DIAMONDS);
-        Card cardTwo = new Card(7, Suit.CLUBS);
-        Card upCard = new Card(9, Suit.HEARTS);
-        myHand.hit(cardOne);
-        myHand.hit(cardTwo);
-        Play advice = Play.HIT;
-        Play testAdvice = advise(myHand, upCard);
-        assertEquals(advice,testAdvice);
+        try{
+            Class<?> clazz;
+            String className = "charlie.advisor.Advisor";
+            clazz = Class.forName(className);
+            IAdvisor advisor = (IAdvisor) clazz.newInstance();
+            Hand myHand = new Hand(new Hid(Seat.NONE));
+            Card cardOne = new Card(10, Suit.DIAMONDS);
+            Card cardTwo = new Card(7, Suit.CLUBS);
+            Card upCard = new Card(9, Suit.HEARTS);
+            myHand.hit(cardOne);
+            myHand.hit(cardTwo);
+            Play advice = Play.HIT;
+            Play testAdvice = advisor.advise(myHand, upCard);
+            assertEquals(advice,testAdvice);
+        }catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+            ex.printStackTrace();
+        }
     }
     
 }

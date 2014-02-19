@@ -5,6 +5,7 @@
  */
 package charlie.bs.section1;
 
+import charlie.card.Card.Suit;
 import charlie.card.Card;
 import charlie.card.Hand;
 import charlie.card.Hid;
@@ -24,8 +25,12 @@ public class Test00_1217_26 {
     @Test 
     public void testAdvice(){
         Hand myHand = new Hand(new Hid(Seat.YOU));
+        Card cardOne = new Card(10, Suit.DIAMONDS);
+        Card cardTwo = new Card(7, Suit.CLUBS);
         Card upCard = new Card(9, Suit.HEARTS);
-        Play advice = Play.NONE;
+        myHand.hit(cardOne);
+        myHand.hit(cardTwo);
+        Play advice = Play.HIT;
         Play testAdvice = advise(myHand, upCard);
         assertEquals(advice,testAdvice);
     }

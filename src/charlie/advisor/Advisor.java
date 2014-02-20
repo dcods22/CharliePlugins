@@ -17,10 +17,18 @@ import java.util.Map;
  * @author Dan Cody
  */
 public class Advisor implements IAdvisor{
+    
     //three maps for the advice
     Map<Integer, Play[]> pairTable;
     Map<Integer, Play[]> aceTable;
     Map<Integer, Play[]> totalTable;
+    
+    /**
+     * empty constructor to create an instance of the Advisor
+     */
+    public Advisor(){
+        
+    }
     
     /**
      * Method to create the tables of advice for Black Jack

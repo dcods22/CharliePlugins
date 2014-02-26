@@ -155,66 +155,28 @@ public class Advisor implements IAdvisor{
         //the actual advice
         Play advice;
         
-        if(myHand.size() == 2){
-            if(myHand.isPair()){
-                //lookup is value since both cards are the same
-                //pair hash table
-                Integer value = cardOne.value();
-                playArray = pairTable.get(value);
-                advice = playArray[secondValue];
-            }
-            else if(cardOne.isAce()){
-                //ace hash table
-                //key is value because its other card besides ace
-                Integer value = cardTwo.value();
-                playArray = aceTable.get(value);
-                advice = playArray[secondValue];        
-            }
-            else if(cardTwo.isAce()){
-                //ace hash table
-                //key is value because its other card besides ace
-                Integer value = cardOne.value();
-                playArray = aceTable.get(value);
-                advice = playArray[secondValue];         
-            }else{
-                //total number hash table
-                //key is total since its the amount
-                Integer total = cardOne.value() + cardTwo.value();
-                playArray = totalTable.get(total);
-                advice = playArray[secondValue];
-            }   
-        }else if(myHand.size() == 3){
-            //get next card value
-            Card cardThree = myHand.getCard(2);
-            //find advice based on total
-            Integer total = cardOne.value() + cardTwo.value() + cardThree.value();
-            playArray = totalTable.get(total);
+        if(myHand.isPair()){
+            //lookup is value since both cards are the same
+            //pair hash table
+            Integer value = cardOne.value();
+            playArray = pairTable.get(value);
             advice = playArray[secondValue];
-        }else if(myHand.size() == 4){
-            //get next two card values
-            Card cardThree = myHand.getCard(2);
-            Card cardFour = myHand.getCard(3);
-            //find advice based on total
-            Integer total = cardOne.value() + cardTwo.value() + cardThree.value() + cardFour.value();
-            playArray = totalTable.get(total);
+        } else if (cardOne.isAce()) {
+            //ace hash table
+            //key is value because its other card besides ace
+            Integer value = cardTwo.value();
+            playArray = aceTable.get(value);
             advice = playArray[secondValue];
-        }else if(myHand.size() == 5){
-            //get next three card values
-            Card cardThree = myHand.getCard(2);
-            Card cardFour = myHand.getCard(3);
-            Card cardFive = myHand.getCard(4);
-            //find advice based on total
-            Integer total = cardOne.value() + cardTwo.value() + cardThree.value() + cardFour.value()  + cardFive.value();
-            playArray = totalTable.get(total);
+        } else if (cardTwo.isAce()) {
+            //ace hash table
+            //key is value because its other card besides ace
+            Integer value = cardOne.value();
+            playArray = aceTable.get(value);
             advice = playArray[secondValue];
-        }else{
-            //extra case just incase of 6 card charlie and advice
-            Card cardThree = myHand.getCard(2);
-            Card cardFour = myHand.getCard(3);
-            Card cardFive = myHand.getCard(4);
-            Card cardSix= myHand.getCard(5);
-            //get advice based on totals
-            Integer total = cardOne.value() + cardTwo.value() + cardThree.value() + cardFour.value()  + cardFive.value() + cardSix.value();
+        } else {
+            //total number hash table
+            //key is total since its the amount
+            Integer total = myHand.getValue();
             playArray = totalTable.get(total);
             advice = playArray[secondValue];
         }

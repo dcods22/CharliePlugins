@@ -15,7 +15,7 @@ import charlie.util.Play;
  * @author Dan Cody and Brenden Bishop
  */
 public class Advisor implements IAdvisor{
-    BasicStratergy advisor;
+    private BasicStrategy advisor;
     /**
      * empty constructor to create an instance of the Advisor
      */
@@ -32,7 +32,7 @@ public class Advisor implements IAdvisor{
     @Override
     public Play advise(Hand myHand, Card upCard){
         //create the basic stratergy
-        advisor = new BasicStratergy();
+        advisor = new BasicStrategy();
         
         //return the advice
         return advisor.advise(myHand, upCard);

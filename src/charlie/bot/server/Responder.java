@@ -9,7 +9,9 @@ package charlie.bot.server;
 import charlie.advisor.BasicStrategy;
 import charlie.card.Card;
 import charlie.card.Hand;
+import charlie.card.Hid;
 import charlie.dealer.Dealer;
+import charlie.plugin.IBot;
 import charlie.util.Play;
 
 /**
@@ -17,16 +19,20 @@ import charlie.util.Play;
  * @author Dan
  */
 public class Responder implements Runnable{
+    IBot player;
     private BasicStrategy advisor;
     Hand myHand;
     Card upCard;
     Dealer dealer;
     Play advise;
+    Hid hid;
     
-    public Responder(Hand myHand, Card upCard, Dealer dealer){
+    public Responder(Hand myHand, Card upCard, Dealer dealer, IBot player){
         this.myHand = myHand;
         this.upCard = upCard;
         this.dealer = dealer;
+        this.player = player;
+        this.hid = myHand.getHid();
     }
     
     @Override
@@ -36,6 +42,20 @@ public class Responder implements Runnable{
         if(advise == Play.STAY)
             advise = advisor.adviseTotalOnly(myHand, upCard);
         
-        
+        try{
+            int sleep = (int) ((Math.random() * 1000) + 1500);
+
+            Thread.sleep(sleep);
+
+            if(advise == Play.HIT)
+                dealer.hit(player, hid);
+            else if(advise == Play.STAY)
+                dealer.stay(player, hid);
+            else if(advise == Play.DOUBLE_DOWN){
+                hid.dubble();
+                dealer.doubleDown(player, hid);
+            }
+         }catch(InterruptedException e){
+        }
     }
 }

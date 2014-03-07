@@ -17,7 +17,8 @@ import java.util.List;
  *
  * @author Dan
  */
-public class B9 implements IBot{
+public class N6 implements IBot{
+    Responder responder;
     Hand myHand;
     Dealer dealer;
     Card upCard;
@@ -27,7 +28,7 @@ public class B9 implements IBot{
     int trueCount;
     double betsize;
     
-    public B9(){ 
+    public N6(){ 
         runningCount = 0;
         trueCount = 0;
     }
@@ -37,7 +38,7 @@ public class B9 implements IBot{
         hid = new Hid(seat);
         return (myHand = new Hand(hid));  
     }
-
+    
     @Override
     public void setDealer(Dealer dealer) {
         this.dealer = dealer;
@@ -120,12 +121,9 @@ public class B9 implements IBot{
 
     @Override
     public void play(Hid hid) {  
-        System.out.println("Entered Play");
-        if(this.hid.getSeat() == hid.getSeat()){
-            System.out.println("My Play");
-            Responder responder = new Responder(myHand, upCard, dealer, this);
-            new Thread(responder).start();
-        }
-    }
-    
+            if(this.hid.getSeat() == hid.getSeat()){
+                responder = new Responder(myHand, upCard, dealer, this);
+                new Thread(responder).start();
+            }
+    }    
 }

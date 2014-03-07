@@ -96,9 +96,11 @@ public class B9 implements IBot{
      */
     @Override
     public void deal(Hid hid, Card card, int[] values) {
+        //if its delt to the dealer then it is the upcard
         if(hid.getSeat() == Seat.DEALER)
             upCard = card;
        
+        //if I have been delt enter responder thread
         if(this.hid.getSeat() == hid.getSeat()){
             Responder responder = new Responder(myHand, upCard, dealer, this);
             new Thread(responder).start();
@@ -192,9 +194,8 @@ public class B9 implements IBot{
      */
     @Override
     public void play(Hid hid) {  
-        System.out.println("Entered Play");
+        //if its my play enter responder thread
         if(this.hid.getSeat() == hid.getSeat()){
-            System.out.println("My Play");
             Responder responder = new Responder(myHand, upCard, dealer, this);
             new Thread(responder).start();
         }

@@ -14,8 +14,8 @@ import charlie.plugin.IBot;
 import java.util.List;
 
 /**
- *
- * @author Dan
+ * Class to make the N6 bot
+ * @author Dan Cody and Brenden Bishop
  */
 public class N6 implements IBot{
     //Hand of the bot

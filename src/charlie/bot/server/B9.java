@@ -14,8 +14,8 @@ import charlie.plugin.IBot;
 import java.util.List;
 
 /**
- *
- * @author Dan
+ * Class to make the B9 bot
+ * @author Dan Cody and Brenden Bishop
  */
 public class B9 implements IBot{
     //Hand of the bot

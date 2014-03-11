@@ -39,7 +39,7 @@ public class Responder implements Runnable{
     public void run(){
         advisor = new BasicStrategy();
         advise = advisor.advise(myHand, upCard);
-        if(advise == Play.STAY)
+        if(advise == Play.SPLIT)
             advise = advisor.adviseTotalOnly(myHand, upCard);
         
         try{

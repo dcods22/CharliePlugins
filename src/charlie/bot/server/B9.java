@@ -85,7 +85,7 @@ public class B9 implements IBot{
      */
     @Override
     public void endGame(int shoeSize) {
-        trueCount = (runningCount / shoeSize);
+        trueCount = (runningCount / (shoeSize / 52));
     }
 
     /**
@@ -102,8 +102,11 @@ public class B9 implements IBot{
        
         //if I have been delt enter responder thread
         if(this.hid.getSeat() == hid.getSeat()){
-            Responder responder = new Responder(myHand, upCard, dealer, this);
-            new Thread(responder).start();
+            if(myHand.size() > 2){
+                Responder responder = new Responder(myHand, upCard, dealer, this);
+                new Thread(responder).start();
+            }
+           //myHand.hit(card);
         }
         
         int cardValue = values[0];

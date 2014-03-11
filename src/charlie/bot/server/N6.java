@@ -84,7 +84,7 @@ public class N6 implements IBot{
      */
     @Override
     public void endGame(int shoeSize) {
-        trueCount = (runningCount / shoeSize);
+        trueCount = (runningCount / (shoeSize / 52));
     }
 
     /**
@@ -95,14 +95,17 @@ public class N6 implements IBot{
      */
     @Override
     public void deal(Hid hid, Card card, int[] values) {
-        //if the dealer was delt then get the up card
+        //if its delt to the dealer then it is the upcard
         if(hid.getSeat() == Seat.DEALER)
             upCard = card;
        
-        //if its my play enter responder thread
+        //if I have been delt enter responder thread
         if(this.hid.getSeat() == hid.getSeat()){
-            Responder responder = new Responder(myHand, upCard, dealer, this);
-            new Thread(responder).start();
+            if(myHand.size() > 2){
+                Responder responder = new Responder(myHand, upCard, dealer, this);
+                new Thread(responder).start();
+            }
+            //myHand.hit(card);
         }
         
         int cardValue = values[0];

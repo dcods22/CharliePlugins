@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package charlie.bot.server;
 import charlie.card.Card;
 import charlie.card.Hand;
@@ -89,9 +83,9 @@ public class B9 implements IBot{
     }
 
     /**
-     * Method to say a card has been delt
-     * @param hid the hid to which the card has been delt
-     * @param card the card of which is delt
+     * Method to say a card has been dealt
+     * @param hid the hid to which the card has been dealt
+     * @param card the card of which is dealt
      * @param values the value of the card
      */
     @Override
@@ -100,6 +94,9 @@ public class B9 implements IBot{
         if(hid.getSeat() == Seat.DEALER)
             upCard = card;
        
+        if(seat == hid.getSeat())
+            myHand.hit(card);
+        
         //if I have been delt enter responder thread
         if(this.hid.getSeat() == hid.getSeat()){
             if(myHand.size() > 2){

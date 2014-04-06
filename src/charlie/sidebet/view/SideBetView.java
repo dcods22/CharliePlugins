@@ -23,10 +23,11 @@
 
 package charlie.sidebet.view;
 
+import charlie.audio.Effect;
 import charlie.card.Hid;
 import charlie.plugin.ISideBetView;
 import charlie.view.AMoneyManager;
-
+import charlie.audio.SoundFactory;
 import charlie.view.sprite.ChipButton;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -90,12 +91,16 @@ public class SideBetView implements ISideBetView {
             if(button.isPressed(x, y)) {
                 amt += button.getAmt();
                 LOG.info("A. side bet amount "+button.getAmt()+" updated new amt = "+amt);
+                SoundFactory.play(Effect.CHIPS_IN);
             } 
         }
+        
+        
         
         if(oldAmt == amt) {
             amt = 0;
             LOG.info("B. side bet amount cleared");
+            SoundFactory.play(Effect.CHIPS_OUT);
         }
     }
 

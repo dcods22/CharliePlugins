@@ -95,8 +95,6 @@ public class SideBetView implements ISideBetView {
             } 
         }
         
-        
-        
         if(oldAmt == amt) {
             amt = 0;
             LOG.info("B. side bet amount cleared");
@@ -152,6 +150,11 @@ public class SideBetView implements ISideBetView {
      */
     @Override
     public void render(Graphics2D g) {
+        
+        String super7 = "SUPER 7 Pays 3:1";
+        String royalMatch = "ROYAL MATCH Pays 25:1";
+        String exactly13 = "EXACTLY 13 Pays 10:1";
+        
         // Draw the at-stake place on the table
         g.setColor(Color.RED); 
         g.setStroke(dashed);
@@ -161,5 +164,14 @@ public class SideBetView implements ISideBetView {
         g.setFont(font);
         g.setColor(Color.WHITE);
         g.drawString(""+amt, X-5, Y+5);
+        
+        //Draw the Side Bets and Amounts
+        g.setFont(font);
+        g.setColor(Color.black);
+        //Draw the strings
+        g.drawString(super7, X-10, Y+5);
+        g.drawString(royalMatch, X-15, Y+5);
+        g.drawString(exactly13, X-20, Y+5);
+        
     }
 }

@@ -95,7 +95,7 @@ public class SideBetView implements ISideBetView {
             } 
         }
         
-        if(oldAmt == amt) {
+        if((x > X && y > y) && (x < (X + 50) && y < (Y + 50))){
             amt = 0;
             LOG.info("B. side bet amount cleared");
             SoundFactory.play(Effect.CHIPS_OUT);

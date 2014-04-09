@@ -70,13 +70,10 @@ public class SideBetRule implements ISideBetRule {
         
         //Royal Match
         if(card.getSuit() == card2.getSuit()){
-            LOG.info("side bet ROYAL MATCH matches");
-            if((card.getRank() == Card.QUEEN || card.getRank() == Card.KING) && (card2.getRank() == Card.QUEEN || card2.getRank() == Card.KING)){
+            if((card.getRank() == Card.QUEEN && card2.getRank() == Card.KING) || (card2.getRank() == Card.QUEEN || card.getRank() == Card.KING)){
+                LOG.info("side bet ROYAL MATCH matches");
                 if(PAYOFF < 25.0)
                     PAYOFF = 25.0;
-            }else{
-                if(PAYOFF < 2.5)
-                   PAYOFF = 2.5;
             }
         }
         

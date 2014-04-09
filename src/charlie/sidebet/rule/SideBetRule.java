@@ -59,7 +59,7 @@ public class SideBetRule implements ISideBetRule {
         
         //Getting both cards in the hand
         Card card = hand.getCard(0);
-        Card card2 = hand.getCard(2);
+        Card card2 = hand.getCard(1);
  
         //Super 7
         if(card.getRank() == 7) {
@@ -71,7 +71,7 @@ public class SideBetRule implements ISideBetRule {
         //Royal Match
         if(card.getSuit() == card2.getSuit()){
             LOG.info("side bet ROYAL MATCH matches");
-            if((card.getRank() == 11 || card.getRank() == 12) && (card2.getRank() == 11 || card2.getRank() == 12)){
+            if((card.getRank() == Card.QUEEN || card.getRank() == Card.KING) && (card2.getRank() == Card.QUEEN || card2.getRank() == Card.KING)){
                 if(PAYOFF < 25.0)
                     PAYOFF = 25.0;
             }else{

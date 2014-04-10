@@ -104,7 +104,7 @@ public class SideBetView implements ISideBetView {
                 LOG.info("A. side bet amount "+button.getAmt()+" updated new amt = "+amt);
                 int n = chips.size();
                 
-                int placeX = PLACE_HOME_X + n * 1000/3 + ran.nextInt(10)-10;
+                int placeX = PLACE_HOME_X + n * 8 + ran.nextInt(10)-10;
                 
                 int placeY = PLACE_HOME_Y + ran.nextInt(5)-5;
                 

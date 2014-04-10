@@ -100,21 +100,28 @@ public class SideBetView implements ISideBetView {
         // Test if any chip button has been pressed.
         for(ChipButton button: buttons) {
             if(button.isPressed(x, y)) {
+                //update amount
                 amt += button.getAmt();
+                //log the infor
                 LOG.info("A. side bet amount "+button.getAmt()+" updated new amt = "+amt);
+                //see how many chips are present
                 int n = chips.size();
                 
+                //find place to put the chip
                 int placeX = PLACE_HOME_X + n * 8 + ran.nextInt(10)-10;
                 
                 int placeY = PLACE_HOME_Y + ran.nextInt(5)-5;
                 
+                //create a new one
                 Chip chip = new Chip(button.getImage(),placeX,placeY,button.getAmt());
                 
+                //add chip and play sound
                 chips.add(chip);
                 SoundFactory.play(Effect.CHIPS_IN);
             } 
         }
         
+        //check to see if amount has been clicked to clear it out
         if(((x >= (X - DIAMETER)) && (y >= (Y - DIAMETER))) && (x <= (X + DIAMETER)) && (y <=(Y + DIAMETER))){
             amt = 0;
             chips.clear();
@@ -144,9 +151,6 @@ public class SideBetView implements ISideBetView {
             
         }else if(bet < 0){
             //Loss
-            
-        }else{
-            //Push
             
         }
         
@@ -183,6 +187,7 @@ public class SideBetView implements ISideBetView {
     @Override
     public void render(Graphics2D g) {
         
+        //Strings to render on screen
         String super7 = "SUPER 7 Pays 3:1";
         String royalMatch = "ROYAL MATCH Pays 25:1";
         String exactly13 = "EXACTLY 13 Pays 10:1";
@@ -197,6 +202,7 @@ public class SideBetView implements ISideBetView {
         g.setColor(Color.WHITE);
         g.drawString(""+amt, X-5, Y+5);
         
+        
         //Draw the Side Bets and Amounts
         g.setFont(font);
         g.setColor(Color.black);
@@ -205,6 +211,7 @@ public class SideBetView implements ISideBetView {
         g.drawString(royalMatch, X+40, Y-40);
         g.drawString(exactly13, X+40, Y-20);
         
+        //render all the chips
         for(int i=0; i < chips.size(); i++) {
             Chip chip = chips.get(i);
             chip.render(g);

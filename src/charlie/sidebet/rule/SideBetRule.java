@@ -84,6 +84,7 @@ public class SideBetRule implements ISideBetRule {
                 PAYOFF = 10.0;
         }
         
+        //checkif pay off is greater than 0 if so pay if not he lost
         if(PAYOFF != 0.0)
             return bet * PAYOFF;
         else{

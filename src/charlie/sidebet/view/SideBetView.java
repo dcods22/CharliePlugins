@@ -200,8 +200,21 @@ public class SideBetView implements ISideBetView {
         // Draw the at-stake amount
         g.setFont(font);
         g.setColor(Color.WHITE);
-        g.drawString(""+amt, X-5, Y+5);
-        
+        if (amt < 10) {
+            g.drawString("" + amt, X - 5, Y + 5);
+        } else {
+            if (amt < 100) {
+                g.drawString("" + amt, X - 10, Y + 5);
+            } else {
+                if (amt > 100) {
+                    g.drawString("" + amt, X - 15, Y + 5);
+                } else {
+                    if(amt > 1000){
+                    g.drawString("" + amt, X - 20, Y + 5);
+                    }
+                }
+            }
+        }   
         
         //Draw the Side Bets and Amounts
         g.setFont(font);

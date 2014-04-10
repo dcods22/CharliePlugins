@@ -15,19 +15,19 @@ import charlie.util.Play;
  */
 public class Responder implements Runnable{
     //The player
-    IBot player;
+    private IBot player;
     //the advisor
     private Advisor advisor;
     //the players hand
-    Hand myHand;
+    private Hand myHand;
     //the dealer upcard
-    Card upCard;
+    private Card upCard;
     //the dealer
-    Dealer dealer;
+    private Dealer dealer;
     //the play he should make
-    Play advise;
+    private Play advise;
     //the players HID
-    Hid hid;
+    private Hid hid;
     
     public Responder(Hand myHand, Card upCard, Dealer dealer, IBot player){
         this.myHand = myHand;

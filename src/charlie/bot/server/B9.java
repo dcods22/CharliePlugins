@@ -94,8 +94,8 @@ public class B9 implements IBot{
         if(hid.getSeat() == Seat.DEALER)
             upCard = card;
        
-        if(seat == hid.getSeat())
-            myHand.hit(card);
+        //if(seat == hid.getSeat())
+            //myHand.hit(card);
         
         //if I have been delt enter responder thread
         if(this.hid.getSeat() == hid.getSeat()){

@@ -93,8 +93,8 @@ public class N6 implements IBot{
         if(hid.getSeat() == Seat.DEALER)
             upCard = card;
         
-        if(hid.getSeat() == seat)
-            myHand.hit(card);
+        //if(hid.getSeat() == seat)
+            //myHand.hit(card);
         
         //if I have been delt enter responder thread
         if(this.hid.getSeat() == hid.getSeat()){

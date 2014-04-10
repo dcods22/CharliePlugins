@@ -36,7 +36,8 @@ import org.slf4j.LoggerFactory;
 public class SideBetRule implements ISideBetRule {
     private final Logger LOG = LoggerFactory.getLogger(SideBetRule.class);
     //setting the pay the user should get
-    private Double PAYOFF = 0.0;    
+    private Double PAYOFF = 0.0; 
+    private final Double PAYOFF_SUPER7 = 3.0;
     
     /**
      * Apply rule to the hand and return the payout if the rule matches
@@ -46,7 +47,6 @@ public class SideBetRule implements ISideBetRule {
      */
     @Override
     public double apply(Hand hand) {
-
         //setting the bet
         Double bet = hand.getHid().getSideAmt();
         LOG.info("side bet amount = "+bet);

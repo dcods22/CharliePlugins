@@ -95,7 +95,7 @@ public class SideBetView implements ISideBetView {
             } 
         }
         
-        if(((x > X) && (y > y)) && ((x < (X + 50)) && (y < (Y + 50)))){
+        if(((x >= (X - DIAMETER)) && (y >= (Y - DIAMETER))) && (x <= (X + DIAMETER)) && (y <=(Y + DIAMETER))){
             amt = 0;
             LOG.info("B. side bet amount cleared");
             SoundFactory.play(Effect.CHIPS_OUT);
@@ -117,6 +117,17 @@ public class SideBetView implements ISideBetView {
         
         // Update the bankroll
         moneyManager.increase(bet);
+        
+        if(bet > 0){
+            //Win
+            
+        }else if(bet < 0){
+            //Loss
+            
+        }else{
+            //Push
+            
+        }
         
         LOG.info("new bankroll = "+moneyManager.getBankroll());
     }
@@ -169,9 +180,9 @@ public class SideBetView implements ISideBetView {
         g.setFont(font);
         g.setColor(Color.black);
         //Draw the strings
-        g.drawString(super7, X-10, Y+5);
-        g.drawString(royalMatch, X-15, Y+5);
-        g.drawString(exactly13, X-20, Y+5);
+        g.drawString(super7, X+40, Y-60);
+        g.drawString(royalMatch, X+40, Y-40);
+        g.drawString(exactly13, X+40, Y-20);
         
     }
 }

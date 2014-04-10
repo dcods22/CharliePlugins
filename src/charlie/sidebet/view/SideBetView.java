@@ -28,12 +28,16 @@ import charlie.card.Hid;
 import charlie.plugin.ISideBetView;
 import charlie.view.AMoneyManager;
 import charlie.audio.SoundFactory;
+import charlie.view.sprite.Chip;
+import charlie.view.sprite.AtStakeSprite;
 import charlie.view.sprite.ChipButton;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,6 +51,13 @@ public class SideBetView implements ISideBetView {
     public final static int X = 400;
     public final static int Y = 200;
     public final static int DIAMETER = 50;
+    
+    protected List<Chip> chips = new ArrayList<>();
+    // Corresponding chips equal to the stake
+    public final static int PLACE_HOME_X = X + AtStakeSprite.DIAMETER + 10;
+    public final static int PLACE_HOME_Y = Y + AtStakeSprite.DIAMETER / 4;
+    protected Random ran = new Random();
+    protected Integer[] amounts = { 100, 25, 5 };
     
     protected Font font = new Font("Arial", Font.BOLD, 18);
     protected BasicStroke stroke = new BasicStroke(3);
@@ -91,12 +102,22 @@ public class SideBetView implements ISideBetView {
             if(button.isPressed(x, y)) {
                 amt += button.getAmt();
                 LOG.info("A. side bet amount "+button.getAmt()+" updated new amt = "+amt);
+                int n = chips.size();
+                
+                int placeX = PLACE_HOME_X + n * 1000/3 + ran.nextInt(10)-10;
+                
+                int placeY = PLACE_HOME_Y + ran.nextInt(5)-5;
+                
+                Chip chip = new Chip(button.getImage(),placeX,placeY,button.getAmt());
+                
+                chips.add(chip);
                 SoundFactory.play(Effect.CHIPS_IN);
             } 
         }
         
         if(((x >= (X - DIAMETER)) && (y >= (Y - DIAMETER))) && (x <= (X + DIAMETER)) && (y <=(Y + DIAMETER))){
             amt = 0;
+            chips.clear();
             LOG.info("B. side bet amount cleared");
             SoundFactory.play(Effect.CHIPS_OUT);
         }
@@ -183,6 +204,11 @@ public class SideBetView implements ISideBetView {
         g.drawString(super7, X+40, Y-60);
         g.drawString(royalMatch, X+40, Y-40);
         g.drawString(exactly13, X+40, Y-20);
+        
+        for(int i=0; i < chips.size(); i++) {
+            Chip chip = chips.get(i);
+            chip.render(g);
+        }
         
     }
 }

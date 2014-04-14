@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import charle.sb.section1.*;
+import charlie.sb.section1.*;
 
 
 /**

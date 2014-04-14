@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package charle.sb.section1;
+package charlie.sb.section1;
 
 import charlie.card.Card;
 import charlie.card.Hand;
@@ -23,9 +23,9 @@ import static org.junit.Assert.*;
  *
  * @author Brenden
  */
-public class Test_05 {
+public class Test_02 {
     
-    public Test_05() {
+    public Test_02() {
     }
     
     @BeforeClass

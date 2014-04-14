@@ -4,14 +4,14 @@
  * and open the template in the editor.
  */
 
-package charle.sb.section1;
+package charlie.sb.section1;
 
-import charlie.sidebet.rule.*;
 import charlie.card.Card;
 import charlie.card.Hand;
 import charlie.card.Hid;
 import charlie.dealer.Seat;
-import charlie.sidebet.test.*;
+import charlie.sidebet.rule.SideBetRule;
+import charlie.sidebet.test.Shoe;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -21,11 +21,11 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author Brenden Bishop & Dan Cody
+ * @author Brenden
  */
-public class Test_01 {
+public class Test_10 {
     
-    public Test_01() {
+    public Test_10() {
     }
     
     @BeforeClass
@@ -56,14 +56,14 @@ public class Test_01 {
         Card cardTwo = new Card(shoe.next());
         myHand.hit(cardOne);
         myHand.hit(cardTwo);
-        myHand.getHid().setSideAmt(0);
-        myHand.getHid().setAmt(0);
+        myHand.getHid().setSideAmt(10);
+        myHand.getHid().setAmt(25);
         SideBetRule test = new SideBetRule();
         double startAmt = 1000;
-        double totalAmt = 1000;
+        double totalAmt = 1055;
         double betAmt = myHand.getHid().getAmt();
         double testPayout = test.apply(myHand);
         double payout = startAmt + betAmt + testPayout;
-        assertEquals(payout, totalAmt, 0.01);    
+        assertEquals(payout, totalAmt, 0.01);     
     }
 }

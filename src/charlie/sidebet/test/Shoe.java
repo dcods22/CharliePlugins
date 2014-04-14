@@ -34,6 +34,15 @@ public class Shoe extends charlie.card.Shoe {
     public void init() {
         cards.clear();
         
+        /* Test case #1
+        cards.add(new Card(7,Card.Suit.HEARTS));
+        cards.add(new Card(Card.KING,Card.Suit.CLUBS));
+        
+        cards.add(new Card(9,Card.Suit.SPADES));
+        cards.add(new Card(9,Card.Suit.DIAMONDS)); 
+        
+        cards.add(new Card(3,Card.Suit.CLUBS));*/
+        
         // Test case #2
         cards.add(new Card(7,Card.Suit.HEARTS));
         cards.add(new Card(Card.KING,Card.Suit.CLUBS));

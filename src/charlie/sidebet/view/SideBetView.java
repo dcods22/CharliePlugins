@@ -32,7 +32,6 @@ import charlie.view.AHand.Outcome;
 import charlie.view.sprite.Chip;
 import charlie.view.sprite.AtStakeSprite;
 import charlie.view.sprite.ChipButton;
-import charlie.view.sprite.TurnIndicator;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -156,6 +155,7 @@ public class SideBetView implements ISideBetView {
         // Update the bankroll
         moneyManager.increase(bet);
         
+        //change the outcome field based on outcome
         if(bet > 0){
             outcome = Outcome.Win;
         }else if(bet < 0){
@@ -170,6 +170,7 @@ public class SideBetView implements ISideBetView {
      */
     @Override
     public void starting() {
+        //set the output to none
         outcome = Outcome.None;
     }
 
@@ -209,6 +210,8 @@ public class SideBetView implements ISideBetView {
         // Draw the at-stake amount
         g.setFont(font);
         g.setColor(Color.WHITE);
+        
+        //make sure the output is centered
         if (amt < 10) {
             g.drawString("" + amt, X - 5, Y + 5);
         } else {
@@ -239,15 +242,18 @@ public class SideBetView implements ISideBetView {
             chip.render(g);
         }
         
-        renderOutcome(g, "test");
+        //render the 
+        renderOutcome(g);
     }
     
-    protected void renderOutcome(Graphics2D g, String text) {
+    protected void renderOutcome(Graphics2D g) {
+        //position to draw outcome text
         int drawX = X + 25;
         int drawY = Y + 2;
         
         String outcomeString = "";
         
+        //setting the outcome string
         if(outcome == Outcome.None){
         }else if(outcome == Outcome.Win){
             outcomeString = " WIN ! ";
@@ -255,13 +261,12 @@ public class SideBetView implements ISideBetView {
             outcomeString = " LOSE ! ";
         }
         
-        
-        
+        //figuring the distance to draw the output
         FontMetrics fm = g.getFontMetrics(outcomeFont);
             int w = fm.charsWidth(outcomeString.toCharArray(), 0, outcomeString.length());
             int h = fm.getHeight();
             
-        
+        //draw the outcome
         if(outcome == Outcome.None) {
         } else if(outcome == Outcome.Lose){
             //render loss

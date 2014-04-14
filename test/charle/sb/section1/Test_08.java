@@ -6,6 +6,12 @@
 
 package charle.sb.section1;
 
+import charlie.card.Card;
+import charlie.card.Hand;
+import charlie.card.Hid;
+import charlie.dealer.Seat;
+import charlie.sidebet.rule.SideBetRule;
+import charlie.sidebet.test.Shoe;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -41,6 +47,23 @@ public class Test_08 {
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
     //
-    // @Test
-    // public void hello() {}
+    @Test
+    public void testSideBets() {
+        Shoe shoe = new Shoe();
+        shoe.init();
+        Hand myHand = new Hand(new Hid(Seat.YOU));
+        Card cardOne = new Card(shoe.next());
+        Card cardTwo = new Card(shoe.next());
+        myHand.hit(cardOne);
+        myHand.hit(cardTwo);
+        myHand.getHid().setSideAmt(10);
+        myHand.getHid().setAmt(25);
+        SideBetRule test = new SideBetRule();
+        double startAmt = 1000;
+        double totalAmt = 1055;
+        double betAmt = myHand.getHid().getAmt();
+        double testPayout = test.apply(myHand);
+        double payout = startAmt + betAmt + testPayout;
+        assertEquals(payout, totalAmt, 0.01);     
+    }
 }

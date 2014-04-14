@@ -56,11 +56,14 @@ public class Test_01 {
         Card cardTwo = new Card(shoe.next());
         myHand.hit(cardOne);
         myHand.hit(cardTwo);
+        myHand.getHid().setSideAmt(0);
+        myHand.getHid().setAmt(0);
         SideBetRule test = new SideBetRule();
         double startAmt = 1000;
         double totalAmt = 1000;
+        double betAmt = myHand.getHid().getAmt();
         double testPayout = test.apply(myHand);
-        double payout = startAmt + testPayout;
+        double payout = startAmt + betAmt + testPayout;
         assertEquals(payout, totalAmt, 0.01);    
     }
 }

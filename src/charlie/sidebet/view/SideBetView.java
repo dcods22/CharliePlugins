@@ -28,12 +28,15 @@ import charlie.card.Hid;
 import charlie.plugin.ISideBetView;
 import charlie.view.AMoneyManager;
 import charlie.audio.SoundFactory;
+import charlie.view.AHand.Outcome;
 import charlie.view.sprite.Chip;
 import charlie.view.sprite.AtStakeSprite;
 import charlie.view.sprite.ChipButton;
+import charlie.view.sprite.TurnIndicator;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.util.List;
 import java.util.ArrayList;
@@ -74,6 +77,13 @@ public class SideBetView implements ISideBetView {
     protected int amt = 0;
     protected AMoneyManager moneyManager;
 
+    protected Outcome outcome = Outcome.None;
+    protected Color looseColorBg = new Color(250,58,5);
+    protected Color looseColorFg = Color.WHITE;
+    protected Color winColorFg = Color.BLACK;
+    protected Color winColorBg = new Color(116,255,4);
+    protected Font outcomeFont = new Font("Arial", Font.BOLD, 18);
+    
     public SideBetView() {
         LOG.info("side bet view constructed");
     }
@@ -147,11 +157,9 @@ public class SideBetView implements ISideBetView {
         moneyManager.increase(bet);
         
         if(bet > 0){
-            //Win
-            
+            outcome = Outcome.Win;
         }else if(bet < 0){
-            //Loss
-            
+            outcome = Outcome.Lose;
         }
         
         LOG.info("new bankroll = "+moneyManager.getBankroll());
@@ -162,6 +170,7 @@ public class SideBetView implements ISideBetView {
      */
     @Override
     public void starting() {
+        outcome = Outcome.None;
     }
 
     /**
@@ -228,6 +237,46 @@ public class SideBetView implements ISideBetView {
         for(int i=0; i < chips.size(); i++) {
             Chip chip = chips.get(i);
             chip.render(g);
+        }
+        
+        renderOutcome(g, "test");
+    }
+    
+    protected void renderOutcome(Graphics2D g, String text) {
+        int drawX = X + 25;
+        int drawY = Y + 2;
+        
+        String outcomeString = "";
+        
+        if(outcome == Outcome.None){
+        }else if(outcome == Outcome.Win){
+            outcomeString = " WIN ! ";
+        }else if(outcome == Outcome.Lose){
+            outcomeString = " LOSE ! ";
+        }
+        
+        
+        
+        FontMetrics fm = g.getFontMetrics(outcomeFont);
+            int w = fm.charsWidth(outcomeString.toCharArray(), 0, outcomeString.length());
+            int h = fm.getHeight();
+            
+        
+        if(outcome == Outcome.None) {
+        } else if(outcome == Outcome.Lose){
+            //render loss
+            g.setColor(looseColorBg);
+            g.fillRoundRect(drawX, drawY-h+5, w, h, 5, 5);
+            g.setColor(looseColorFg);
+            g.setFont(outcomeFont);
+            g.drawString(outcomeString, drawX, drawY);
+        }else if(outcome == Outcome.Win){
+            //render win
+            g.setColor(winColorBg);
+            g.fillRoundRect(drawX, drawY-h+5, w, h, 5, 5);
+            g.setColor(winColorFg);
+            g.setFont(outcomeFont);
+            g.drawString(outcomeString, drawX, drawY);
         }
         
     }

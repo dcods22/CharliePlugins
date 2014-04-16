@@ -80,8 +80,8 @@ public class SideBetRule implements ISideBetRule {
         //Exactly 13
         if(hand.getValue() == 13){
             LOG.info("side bet EXACTLY13 matches");
-            if(PAYOFF < 10.0)
-                PAYOFF = 10.0;
+            if(PAYOFF < 1.0)
+                PAYOFF = 1.0;
         }
         
         //checkif pay off is greater than 0 if so pay if not he lost

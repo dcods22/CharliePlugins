@@ -13,7 +13,7 @@ import java.awt.Graphics2D;
 import java.util.List;
 
 /**
- *
+ * Class to create a bot that will play with the dealer.  
  * @author Dan Cody and Brenden Bishop
  */
 public class ClientBot implements IGerty{
@@ -43,16 +43,25 @@ public class ClientBot implements IGerty{
     protected int busts = 0;
     //number of pushes
     protected int pushes = 0;
+    //total bet 
+    protected int totalBet = 0;
+    //mean bet amount
+    protected double meanBet = 0.0;
+    //max bet
+    protected int maxBet = 0;
     //dealer upcard
     protected Card upCard;
     //bots hand
     protected Hand myHand;
     //advisor
-    private Advisor advisor;
+    private final Advisor advisor = new Advisor();
+    //Counting system
+    private final String betSystem = "Zen Count";
     
     @Override
     public void go() {
        
+        //determining the bet amount
         if(trueCount < 3){
             betAmount = 10;
         }else if(trueCount < 6){
@@ -62,7 +71,14 @@ public class ClientBot implements IGerty{
         }else{
             betAmount = MIN_BET;
         }
-            
+        
+        if(betAmount > maxBet)
+            maxBet = betAmount;
+        
+        totalBet = totalBet + betAmount;
+        meanBet = totalBet / handCount;
+        
+        //make the bets
         courier.bet(betAmount, 0);
         manager.upBet(betAmount);
         
@@ -96,6 +112,7 @@ public class ClientBot implements IGerty{
 
     @Override
     public void endGame(int shoeSize) {
+        //setting the true count
         trueCount = runningCount / shoeSize;
         handCount++;
     }
@@ -103,6 +120,7 @@ public class ClientBot implements IGerty{
     @Override
     public void deal(Hid hid, Card card, int[] values) {
         
+        //freeze at 100 games
         if(handCount == 100){
             try{
                 Thread.sleep(10000000);
@@ -110,6 +128,7 @@ public class ClientBot implements IGerty{
             }
         }
         
+        //Zen method for counting cards
         if(card.isAce())
             runningCount--;
         else if(card.value() < 8)
@@ -119,29 +138,33 @@ public class ClientBot implements IGerty{
         else if(card.value() == 8 || card.value() == 9)
             runningCount--;
         
+        //getting the dealers upcard
         if(hid.getSeat() == Seat.DEALER)
         {
             this.upCard = card;
         }
         
+        //increasing your hand
         if(hid.getSeat() == Seat.YOU){
             myHand.hit(card);
         }
      
-        if(myHand.size() == 2){
+        //playing the hand
+        if(myHand.size() >= 2){
             play(hid);
         }
     }
 
     @Override
     public void shuffling() {
+        //reseting the counts
         runningCount = 0;
         trueCount = 0;
     }
 
     @Override
     public void play(Hid hid) {
-        advisor = new Advisor();
+        
         Play advise = advisor.advise(myHand, upCard);
         
         try{
@@ -168,31 +191,37 @@ public class ClientBot implements IGerty{
 
     @Override
     public void bust(Hid hid) {
-        busts++;
+        if(hid.getSeat() == Seat.YOU)
+            busts++;
     }
 
     @Override
     public void win(Hid hid) {
-        wins++;
+        if(hid.getSeat() == Seat.YOU)
+            wins++;
     }
 
     @Override
     public void blackjack(Hid hid) {
-        blackjacks++;
+        if(hid.getSeat() == Seat.YOU)
+            blackjacks++;
     }
 
     @Override
     public void charlie(Hid hid) {
-        charlies++;
+        if(hid.getSeat() == Seat.YOU)
+            charlies++;
     }
 
     @Override
     public void lose(Hid hid) {
-        loses++;
+        if(hid.getSeat() == Seat.YOU)
+            loses++;
     }
 
     @Override
     public void push(Hid hid) {
-        pushes++;
+        if(hid.getSeat() == Seat.YOU)
+            pushes++;
     }
 }

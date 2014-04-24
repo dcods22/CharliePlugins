@@ -1,10 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-package clientBot;
+package charlie.bot.client;
 
 import charlie.actor.Courier;
 import charlie.card.Card;
@@ -16,16 +10,23 @@ import java.util.List;
 
 /**
  *
- * @author Dan
+ * @author Dan Cody and Brenden Bishop
  */
 public class clientBot implements IGerty{
     
     private final int MIN_BET = 5;
-    protected int handCount;
-    protected int betAmount;
-    protected int runningCount;
-    protected int trueCount;
-
+    protected int handCount = 0;
+    protected int betAmount = MIN_BET;
+    protected int runningCount = 0;
+    protected int trueCount = 0;
+    protected int blackjacks = 0;
+    protected int charlies = 0;
+    protected int wins = 0;
+    protected int loses = 0;
+    protected int busts = 0;
+    protected int pushes = 0;
+    
+    
     @Override
     public void go() {
     
@@ -58,11 +59,21 @@ public class clientBot implements IGerty{
 
     @Override
     public void endGame(int shoeSize) {
-    
+        trueCount = runningCount / shoeSize;
+        handCount++;
     }
 
     @Override
     public void deal(Hid hid, Card card, int[] values) {
+        if(handCount == 100){
+            try{
+                Thread.sleep(10000000);
+            }catch(InterruptedException e){
+                
+            }
+        }
+        
+        
      
     }
 
@@ -73,32 +84,32 @@ public class clientBot implements IGerty{
 
     @Override
     public void bust(Hid hid) {
-    
+        busts++;
     }
 
     @Override
     public void win(Hid hid) {
-    
+        wins++;
     }
 
     @Override
     public void blackjack(Hid hid) {
-    
+        blackjacks++;
     }
 
     @Override
     public void charlie(Hid hid) {
-    
+        charlies++;
     }
 
     @Override
     public void lose(Hid hid) {
-    
+        loses++;
     }
 
     @Override
     public void push(Hid hid) {
-    
+        pushes++;
     }
 
     @Override

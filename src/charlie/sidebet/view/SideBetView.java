@@ -200,7 +200,7 @@ public class SideBetView implements ISideBetView {
         //Strings to render on screen
         String super7 = "SUPER 7 Pays 3:1";
         String royalMatch = "ROYAL MATCH Pays 25:1";
-        String exactly13 = "EXACTLY 13 Pays 10:1";
+        String exactly13 = "EXACTLY 13 Pays 1:1";
         
         // Draw the at-stake place on the table
         g.setColor(Color.RED); 

@@ -47,6 +47,7 @@ public class SideBetRule implements ISideBetRule {
      */
     @Override
     public double apply(Hand hand) {
+        PAYOFF = 0.0;
         //setting the bet
         Double bet = hand.getHid().getSideAmt();
         LOG.info("side bet amount = "+bet);

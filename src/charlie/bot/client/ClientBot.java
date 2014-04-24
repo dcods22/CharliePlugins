@@ -110,6 +110,15 @@ public class ClientBot implements IGerty{
             }
         }
         
+        if(card.isAce())
+            runningCount--;
+        else if(card.value() < 8)
+            runningCount++;
+        else if(card.isFace() || card.value() == 10)
+            runningCount = runningCount - 2;
+        else if(card.value() == 8 || card.value() == 9)
+            runningCount--;
+        
         if(hid.getSeat() == Seat.DEALER)
         {
             this.upCard = card;

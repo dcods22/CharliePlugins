@@ -54,34 +54,49 @@ public class ClientBot implements IGerty{
     //bots hand
     protected Hand myHand;
     //advisor
-    private final Advisor advisor = new Advisor();
+    private Advisor advisor;
     //Counting system
     private final String betSystem = "Zen Count";
+    //Old bet
+    protected int oldBet = 0;
     
     @Override
     public void go() {
        
-        //determining the bet amount
-        if(trueCount < 3){
-            betAmount = 10;
-        }else if(trueCount < 6){
-            betAmount = 15;
-        }else if(trueCount < 8){
-            betAmount = 25;
-        }else{
-            betAmount = MIN_BET;
-        }
+        advisor = new Advisor();
         
+        //determining the bet amount
+        if(trueCount < 1)
+            betAmount = MIN_BET;
+        else if(trueCount < 3)
+            betAmount = 10;
+        else if(trueCount < 6)
+            betAmount = 15;
+        else if(trueCount < 8)
+            betAmount = 25;
+        else
+            betAmount = MIN_BET;
+        
+        
+        //Keep track of the max bet
         if(betAmount > maxBet)
             maxBet = betAmount;
         
-        totalBet = totalBet + betAmount;
-        meanBet = totalBet / handCount;
+        if(handCount != 0){
+            //track the total bet and mean bet
+            totalBet = totalBet + betAmount;
+            meanBet = totalBet / handCount;
+        }
         
-        //make the bets
+        if(oldBet != betAmount){
+            //make the bets
+            manager.clearBet();
+            manager.upBet(betAmount);
+        }
+        
+        //place the actual bet
         courier.bet(betAmount, 0);
-        manager.upBet(betAmount);
-        
+        oldBet = betAmount;
     }
 
     @Override
@@ -107,7 +122,7 @@ public class ClientBot implements IGerty{
 
     @Override
     public void startGame(List<Hid> hids, int shoeSize) {
-    
+        
     }
 
     @Override
@@ -119,6 +134,10 @@ public class ClientBot implements IGerty{
 
     @Override
     public void deal(Hid hid, Card card, int[] values) {
+        
+        if(myHand == null){
+            myHand = new Hand(hid);
+        }
         
         //freeze at 100 games
         if(handCount == 100){
@@ -141,7 +160,7 @@ public class ClientBot implements IGerty{
         //getting the dealers upcard
         if(hid.getSeat() == Seat.DEALER)
         {
-            this.upCard = card;
+            upCard = card;
         }
         
         //increasing your hand
@@ -151,7 +170,7 @@ public class ClientBot implements IGerty{
      
         //playing the hand
         if(myHand.size() >= 2){
-            play(hid);
+            this.play(hid);
         }
     }
 
@@ -164,17 +183,19 @@ public class ClientBot implements IGerty{
 
     @Override
     public void play(Hid hid) {
-        
+        //creating an advisor
         Play advise = advisor.advise(myHand, upCard);
         
+        //try for the sleep 
         try{
             int sleep = (int) ((Math.random() * 1000) + 1500);
 
             Thread.sleep(sleep);
 
+            //make the play
             if(advise != Play.HIT)
                 if(advise == Play.STAY)
-                    courier.hit(hid);
+                    courier.stay(hid);
                 else if(advise == Play.DOUBLE_DOWN){
                     hid.dubble();
                     courier.dubble(hid);

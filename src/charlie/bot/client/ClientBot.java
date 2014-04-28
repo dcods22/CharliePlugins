@@ -96,11 +96,11 @@ public class ClientBot implements IGerty{
         if(betAmount > maxBet)
             maxBet = betAmount;
         
-        if(handCount != 0){
-            //track the total bet and mean bet
-            totalBet = totalBet + betAmount;
-            meanBet = totalBet / handCount;
-        }
+        
+        //track the total bet and mean bet
+        totalBet = totalBet + betAmount;
+        meanBet =  (double) totalBet / ((double) handCount + 1.0);
+        
         
         if(oldBet != betAmount){
             //make the bets
@@ -147,6 +147,7 @@ public class ClientBot implements IGerty{
      */
     @Override
     public void render(Graphics2D g) {
+        //Strings to render
         String hand         = "Hand Count: " + handCount;
         String charlie      = "Charlies: " + charlies;
         String win          = "Wins: " + wins;
@@ -155,10 +156,10 @@ public class ClientBot implements IGerty{
         String bust         = "Busts: " + busts;
         String blackjack    = "Blackjacks: " + blackjacks;
         String runCount     = "Running Count: " + runningCount;
-        String truCount     = "TrueCount: " + trueCount;
-        String maxBetS      = "Max Bet: " + maxBet;
-        String meanBetS     = "Mean Bet: " + meanBet;
-        String shoeDeck     = "Shoe Decks: " + shoeDecks;
+        String truCount     = "TrueCount: " + ((Math.round(trueCount * 100.0)) / 100.0);
+        String maxBetStr    = "Max Bet: " + maxBet;
+        String meanBetStr   = "Mean Bet: " + ((Math.round(meanBet * 100.0)) / 100.0);
+        String shoeDeck     = "Shoe Decks: " + ((Math.round(shoeDecks * 100.0)) / 100.0);
         
         //Draw the Side Bets and Amounts
         g.setFont(font);
@@ -167,8 +168,8 @@ public class ClientBot implements IGerty{
         //Draw Strings
         g.drawString(betSystem, X,Y);
         g.drawString(shoeDeck, X,Y +15);
-        g.drawString(maxBetS, X, Y + 30);
-        g.drawString(meanBetS, X, Y + 45);
+        g.drawString(maxBetStr, X, Y + 30);
+        g.drawString(meanBetStr, X, Y + 45);
         g.drawString(hand, X, Y + 60);
         g.drawString(win, X, Y+75);
         g.drawString(lose, X, Y+90);
@@ -188,6 +189,9 @@ public class ClientBot implements IGerty{
      */
     @Override
     public void startGame(List<Hid> hids, int shoeSize) {
+        //setting the true count
+        shoeDecks = ((double) shoeSize) / 52.0;
+        
         upCard = null;
         myHand = null;
     }
@@ -199,16 +203,16 @@ public class ClientBot implements IGerty{
     @Override
     public void endGame(int shoeSize) {
         //setting the true count
-        shoeDecks = shoeSize / 52;
+        shoeDecks = ((double) shoeSize) / 52.0;
         
-        trueCount = (double) runningCount / shoeDecks;
+        trueCount = ((double) runningCount) / shoeDecks;
         handCount++;
     }
 
     /**
-     * Method to say that a card is delt
-     * @param hid the hid the card is delt to
-     * @param card the card object delt
+     * Method to say that a card is dealt
+     * @param hid the hid the card is dealt to
+     * @param card the card object dealt
      * @param values the values of the cards
      */
     @Override

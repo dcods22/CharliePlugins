@@ -7,7 +7,6 @@ import charlie.card.Hand;
 import charlie.card.Hid;
 import charlie.dealer.Seat;
 import charlie.plugin.IGerty;
-import charlie.util.Play;
 import charlie.view.AMoneyManager;
 import java.awt.Graphics2D;
 import java.util.List;
@@ -122,7 +121,7 @@ public class ClientBot implements IGerty{
 
     @Override
     public void startGame(List<Hid> hids, int shoeSize) {
-        
+        upCard = null;
     }
 
     @Override
@@ -158,7 +157,7 @@ public class ClientBot implements IGerty{
             runningCount--;
         
         //getting the dealers upcard
-        if(hid.getSeat() == Seat.DEALER)
+        if((hid.getSeat() == Seat.DEALER) && (upCard == null))
         {
             upCard = card;
         }
@@ -183,26 +182,10 @@ public class ClientBot implements IGerty{
 
     @Override
     public void play(Hid hid) {
-        //creating an advisor
-        Play advise = advisor.advise(myHand, upCard);
-        
-        //try for the sleep 
-        try{
-            int sleep = (int) ((Math.random() * 1000) + 1500);
-
-            Thread.sleep(sleep);
-
-            //make the play
-            if(advise != Play.HIT)
-                if(advise == Play.STAY)
-                    courier.stay(hid);
-                else if(advise == Play.DOUBLE_DOWN){
-                    hid.dubble();
-                    courier.dubble(hid);
-                }
-            else courier.hit(hid);
-         }catch(InterruptedException e){
-         }
+        if(hid.getSeat() == Seat.YOU){
+            ClientBotThread clientThread = new ClientBotThread(myHand, upCard, courier, this);
+            new Thread(clientThread).start();
+        }
     }   
     
     @Override

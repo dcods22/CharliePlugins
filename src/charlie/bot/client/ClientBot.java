@@ -59,6 +59,9 @@ public class ClientBot implements IGerty{
     //Old bet
     protected int oldBet = 0;
     
+    /**
+     * Method to start the client bot
+     */
     @Override
     public void go() {
        
@@ -67,15 +70,14 @@ public class ClientBot implements IGerty{
         //determining the bet amount
         if(trueCount < 1)
             betAmount = MIN_BET;
-        else if(trueCount < 3)
+        else if(trueCount < 2)
             betAmount = 10;
-        else if(trueCount < 6)
+        else if(trueCount < 3)
             betAmount = 15;
-        else if(trueCount < 8)
+        else if(trueCount < 4)
             betAmount = 25;
         else
             betAmount = MIN_BET;
-        
         
         //Keep track of the max bet
         if(betAmount > maxBet)
@@ -90,7 +92,9 @@ public class ClientBot implements IGerty{
         if(oldBet != betAmount){
             //make the bets
             manager.clearBet();
-            manager.upBet(betAmount);
+            
+            for(int i = 0; i < betAmount; i = i + 5)
+                manager.upBet(MIN_BET);
         }
         
         //place the actual bet
@@ -98,32 +102,56 @@ public class ClientBot implements IGerty{
         oldBet = betAmount;
     }
 
+    /**
+     * method to set the courier
+     * @param courier the courier to set
+     */
     @Override
     public void setCourier(Courier courier) {
         this.courier = courier;
     }
 
+    /**
+     * method to set the money manager
+     * @param moneyManager the money manager to set
+     */
     @Override
     public void setMoneyManager(AMoneyManager moneyManager) {
         manager = moneyManager;
         manager.setBankroll(1000.00);  
     }
 
+    /**
+     * Method to update the view
+     */
     @Override
     public void update() {
     
     }
 
+    /**
+     * Method to render the view
+     */
     @Override
     public void render(Graphics2D g) {
         
     }
 
+    /**
+     * Method to say a new game has started
+     * @param hids the HID's in use
+     * @param shoeSize the shoe size
+     */
     @Override
     public void startGame(List<Hid> hids, int shoeSize) {
         upCard = null;
+        myHand = null;
     }
 
+    /**
+     * method to say the game has ended
+     * @param shoeSize the shoe size
+     */
     @Override
     public void endGame(int shoeSize) {
         //setting the true count
@@ -131,11 +159,19 @@ public class ClientBot implements IGerty{
         handCount++;
     }
 
+    /**
+     * Method to say that a card is delt
+     * @param hid the hid the card is delt to
+     * @param card the card object delt
+     * @param values the values of the cards
+     */
     @Override
     public void deal(Hid hid, Card card, int[] values) {
         
-        if(myHand == null){
-            myHand = new Hand(hid);
+        if(hid.getSeat() == Seat.YOU){
+            if(myHand == null){
+                myHand = new Hand(hid);
+            }
         }
         
         //freeze at 100 games
@@ -156,6 +192,8 @@ public class ClientBot implements IGerty{
         else if(card.value() == 8 || card.value() == 9)
             runningCount--;
         
+        System.out.println(runningCount);
+        
         //getting the dealers upcard
         if((hid.getSeat() == Seat.DEALER) && (upCard == null))
         {
@@ -168,11 +206,16 @@ public class ClientBot implements IGerty{
         }
      
         //playing the hand
-        if(myHand.size() >= 2){
-            this.play(hid);
+        if(hid.getSeat() == Seat.YOU){
+            if(myHand.size() > 2){
+                this.play(hid);
+            }
         }
     }
 
+    /**
+     * Method to say shuffling has happened
+     */
     @Override
     public void shuffling() {
         //reseting the counts
@@ -180,49 +223,81 @@ public class ClientBot implements IGerty{
         trueCount = 0;
     }
 
+    /**
+     * Method to make a play
+     * @param hid the hid which needs to make a play
+     */
     @Override
     public void play(Hid hid) {
-        if(hid.getSeat() == Seat.YOU){
+        //create and start the thread 
+       if(hid.getSeat() == Seat.YOU){
             ClientBotThread clientThread = new ClientBotThread(myHand, upCard, courier, this);
             new Thread(clientThread).start();
         }
     }   
     
+    /**
+     * Method to insure the bet
+     */
     @Override
     public void insure() {
     
     }
 
+    /**
+     * method to say an HID has busted
+     * @param hid the hid which busted
+     */
     @Override
     public void bust(Hid hid) {
         if(hid.getSeat() == Seat.YOU)
             busts++;
     }
 
+    /**
+     * method to say an HID has won
+     * @param hid the hid which won
+     */
     @Override
     public void win(Hid hid) {
         if(hid.getSeat() == Seat.YOU)
             wins++;
     }
 
+    /**
+     * method to say an HID has gotten blackjack
+     * @param hid the hid which has gotten blackjack
+     */
     @Override
     public void blackjack(Hid hid) {
         if(hid.getSeat() == Seat.YOU)
             blackjacks++;
     }
 
+    /**
+     * method to say an HID has gotten a charlie
+     * @param hid the hid which has gotten a charlie
+     */
     @Override
     public void charlie(Hid hid) {
         if(hid.getSeat() == Seat.YOU)
             charlies++;
     }
 
+    /**
+     * method to say an HID has lost
+     * @param hid the hid which lost
+     */
     @Override
     public void lose(Hid hid) {
         if(hid.getSeat() == Seat.YOU)
             loses++;
     }
 
+    /**
+     * method to say an HID has pushed
+     * @param hid the hid which pushed
+     */
     @Override
     public void push(Hid hid) {
         if(hid.getSeat() == Seat.YOU)

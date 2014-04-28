@@ -48,14 +48,17 @@ public class ClientBotThread implements Runnable{
             Thread.sleep(sleep);
 
             //make the play
-            if(advise != Play.HIT)
+            if(advise != Play.HIT){
                 if(advise == Play.STAY)
                     courier.stay(hid);
                 else if(advise == Play.DOUBLE_DOWN){
                     hid.dubble();
                     courier.dubble(hid);
                 }
-            else courier.hit(hid);
+            }    
+            else{ 
+                courier.hit(hid);
+            }
          }catch(InterruptedException e){
          }
     }

@@ -41,6 +41,11 @@ public class ClientBotThread implements Runnable{
         //creating an advisor
         Play advise = advisor.advise(myHand, upCard);
         
+        if(advise == Play.SPLIT)
+            advise = advisor.adviseTotalOnly(myHand, upCard);
+        if((advise == Play.DOUBLE_DOWN) && (myHand.size() > 2))
+            advise = Play.HIT;
+        
         //try for the sleep 
         try{
             int sleep = (int) ((Math.random() * 1000) + 1500);

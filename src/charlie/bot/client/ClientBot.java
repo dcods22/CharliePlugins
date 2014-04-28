@@ -8,6 +8,8 @@ import charlie.card.Hid;
 import charlie.dealer.Seat;
 import charlie.plugin.IGerty;
 import charlie.view.AMoneyManager;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.List;
 
@@ -29,7 +31,7 @@ public class ClientBot implements IGerty{
     //running count
     protected int runningCount = 0;
     //true count
-    protected int trueCount = 0;
+    protected double trueCount = 0;
     //number of blackjacks
     protected int blackjacks = 0;
     //number of charlies
@@ -58,26 +60,37 @@ public class ClientBot implements IGerty{
     private final String betSystem = "Zen Count";
     //Old bet
     protected int oldBet = 0;
+    //Decks in shoe
+    protected double shoeDecks = 0.0;
+    
+    //Renderings
+    //Font 
+    protected Font font = new Font("Arial", Font.BOLD, 12);
+    //Position to render
+    public final static int X = 20;
+    public final static int Y = 200;
     
     /**
      * Method to start the client bot
      */
     @Override
     public void go() {
-       
+       //create an advisor
         advisor = new Advisor();
         
         //determining the bet amount
-        if(trueCount < 1)
+        if(trueCount < -1)
             betAmount = MIN_BET;
+        else if(trueCount < 1)
+            betAmount = MIN_BET * 2;
         else if(trueCount < 2)
-            betAmount = 10;
+            betAmount = 20;
         else if(trueCount < 3)
-            betAmount = 15;
+            betAmount = 30;
         else if(trueCount < 4)
-            betAmount = 25;
+            betAmount = 40;
         else
-            betAmount = MIN_BET;
+            betAmount = 50;
         
         //Keep track of the max bet
         if(betAmount > maxBet)
@@ -134,6 +147,37 @@ public class ClientBot implements IGerty{
      */
     @Override
     public void render(Graphics2D g) {
+        String hand         = "Hand Count: " + handCount;
+        String charlie      = "Charlies: " + charlies;
+        String win          = "Wins: " + wins;
+        String lose         = "Losses: " + loses;
+        String push         = "Pushes: " + pushes;
+        String bust         = "Busts: " + busts;
+        String blackjack    = "Blackjacks: " + blackjacks;
+        String runCount     = "Running Count: " + runningCount;
+        String truCount     = "TrueCount: " + trueCount;
+        String maxBetS      = "Max Bet: " + maxBet;
+        String meanBetS     = "Mean Bet: " + meanBet;
+        String shoeDeck     = "Shoe Decks: " + shoeDecks;
+        
+        //Draw the Side Bets and Amounts
+        g.setFont(font);
+        g.setColor(Color.black);
+        
+        //Draw Strings
+        g.drawString(betSystem, X,Y);
+        g.drawString(shoeDeck, X,Y +15);
+        g.drawString(maxBetS, X, Y + 30);
+        g.drawString(meanBetS, X, Y + 45);
+        g.drawString(hand, X, Y + 60);
+        g.drawString(win, X, Y+75);
+        g.drawString(lose, X, Y+90);
+        g.drawString(bust, X, Y+105);
+        g.drawString(push, X, Y+120);
+        g.drawString(blackjack, X, Y+135);
+        g.drawString(charlie, X, Y+150);
+        g.drawString(runCount, X,Y+165);
+        g.drawString(truCount, X, Y+180);
         
     }
 
@@ -155,7 +199,9 @@ public class ClientBot implements IGerty{
     @Override
     public void endGame(int shoeSize) {
         //setting the true count
-        trueCount = runningCount / shoeSize;
+        shoeDecks = shoeSize / 52;
+        
+        trueCount = (double) runningCount / shoeDecks;
         handCount++;
     }
 
@@ -191,8 +237,6 @@ public class ClientBot implements IGerty{
             runningCount = runningCount - 2;
         else if(card.value() == 8 || card.value() == 9)
             runningCount--;
-        
-        System.out.println(runningCount);
         
         //getting the dealers upcard
         if((hid.getSeat() == Seat.DEALER) && (upCard == null))

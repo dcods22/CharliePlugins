@@ -38,7 +38,15 @@ public class Responder implements Runnable{
     }
     
     @Override
-    public void run(){
+    public void run(){        
+        try{
+            int sleep = (int) ((Math.random() * 1000) + 1500);
+
+            Thread.sleep(sleep);
+        }catch(InterruptedException e){
+        }
+        
+        if(!(myHand.isBlackjack() || myHand.isBroke() || myHand.isCharlie() || myHand.getValue() == 21)){
         //create a new advisor
         advisor = new Advisor();
         advise = advisor.advise(myHand, upCard);
@@ -47,11 +55,6 @@ public class Responder implements Runnable{
         if((advise == Play.DOUBLE_DOWN) && (myHand.size() > 2))
             advise = Play.HIT;
         
-        try{
-            int sleep = (int) ((Math.random() * 1000) + 1500);
-
-            Thread.sleep(sleep);
-
             if(advise != Play.HIT)
                 if(advise == Play.STAY)
                     dealer.stay(player, hid);
@@ -60,7 +63,6 @@ public class Responder implements Runnable{
                     dealer.doubleDown(player, hid);
                 }
             else dealer.hit(player, hid);
-         }catch(InterruptedException e){
         }
     }
 }

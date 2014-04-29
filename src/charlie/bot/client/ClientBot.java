@@ -252,13 +252,6 @@ public class ClientBot implements IGerty{
         if(hid.getSeat() == Seat.YOU){
             myHand.hit(card);
         }
-     
-        //playing the hand
-        if(hid.getSeat() == Seat.YOU){
-            if(myHand.size() > 2){
-                this.play(hid);
-            }
-        }
     }
 
     /**

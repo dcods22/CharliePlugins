@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package charlie.bot.client;
 
 import charlie.actor.Courier;
@@ -18,16 +17,16 @@ import charlie.plugin.IPlayer;
  *
  * @author Dan
  */
-public class ClientBotThread implements Runnable{
+public class ClientBotThread implements Runnable {
+
     protected Hand myHand;
     protected Card upCard;
     protected Courier courier;
     protected IPlayer player;
     protected Hid hid;
     protected Advisor advisor;
-    
-    
-    public ClientBotThread(Hand myHand, Card upCard, Courier courier, IPlayer player){
+
+    public ClientBotThread(Hand myHand, Card upCard, Courier courier, IPlayer player) {
         this.myHand = myHand;
         this.upCard = upCard;
         this.courier = courier;
@@ -35,37 +34,41 @@ public class ClientBotThread implements Runnable{
         this.hid = myHand.getHid();
         advisor = new Advisor();
     }
-    
+
     @Override
     public void run() {
-        //creating an advisor
-        Play advise = advisor.advise(myHand, upCard);
-        
-        if(advise == Play.SPLIT)
-            advise = advisor.adviseTotalOnly(myHand, upCard);
-        if((advise == Play.DOUBLE_DOWN) && (myHand.size() > 2))
-            advise = Play.HIT;
-        
         //try for the sleep 
-        try{
+        try {
             int sleep = (int) ((Math.random() * 1000) + 1500);
 
             Thread.sleep(sleep);
+        } catch (InterruptedException e) {
+        }
+
+        if (!(myHand.isBlackjack() || myHand.isBroke() || myHand.isCharlie() || myHand.getValue() == 21)) {
+            //creating an advisor
+            Play advise = advisor.advise(myHand, upCard);
+
+            if (advise == Play.SPLIT) {
+                advise = advisor.adviseTotalOnly(myHand, upCard);
+            }
+            if ((advise == Play.DOUBLE_DOWN) && (myHand.size() > 2)) {
+                advise = Play.HIT;
+            }
 
             //make the play
-            if(advise != Play.HIT){
-                if(advise == Play.STAY)
+            if (advise != Play.HIT) {
+                if (advise == Play.STAY) {
                     courier.stay(hid);
-                else if(advise == Play.DOUBLE_DOWN){
+                } else if (advise == Play.DOUBLE_DOWN) {
                     hid.dubble();
                     courier.dubble(hid);
                 }
-            }    
-            else{ 
+            } else {
                 courier.hit(hid);
+                player.play(hid);
             }
-         }catch(InterruptedException e){
-         }
+        }
     }
-    
+
 }

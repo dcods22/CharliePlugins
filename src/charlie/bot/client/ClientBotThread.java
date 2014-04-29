@@ -18,7 +18,7 @@ import charlie.plugin.IPlayer;
  * @author Dan
  */
 public class ClientBotThread implements Runnable {
-
+    //Fields
     protected Hand myHand;
     protected Card upCard;
     protected Courier courier;
@@ -26,6 +26,13 @@ public class ClientBotThread implements Runnable {
     protected Hid hid;
     protected Advisor advisor;
 
+    /**
+     * constructor to create a thread
+     * @param myHand the hand of the player
+     * @param upCard the dealers upcard
+     * @param courier the courier
+     * @param player a reference to the player
+     */
     public ClientBotThread(Hand myHand, Card upCard, Courier courier, IPlayer player) {
         this.myHand = myHand;
         this.upCard = upCard;
@@ -35,6 +42,9 @@ public class ClientBotThread implements Runnable {
         advisor = new Advisor();
     }
 
+    /**
+     * method to run the thread
+     */
     @Override
     public void run() {
         //try for the sleep 
@@ -49,6 +59,7 @@ public class ClientBotThread implements Runnable {
             //creating an advisor
             Play advise = advisor.advise(myHand, upCard);
 
+            //change advise if it is split
             if (advise == Play.SPLIT) {
                 advise = advisor.adviseTotalOnly(myHand, upCard);
             }

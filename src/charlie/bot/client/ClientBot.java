@@ -57,11 +57,16 @@ public class ClientBot implements IGerty{
     //advisor
     private Advisor advisor;
     //Counting system
-    private final String betSystem = "Zen Count";
+    private final String betSystem = "Omega 2";
     //Old bet
     protected int oldBet = 0;
     //Decks in shoe
     protected double shoeDecks = 0.0;
+    
+    //which count
+    protected boolean zen = false;
+    protected boolean omega = true;
+    
     
     //Renderings
     //Font 
@@ -78,19 +83,8 @@ public class ClientBot implements IGerty{
        //create an advisor
         advisor = new Advisor();
         
-        //determining the bet amount
-        if(trueCount < -1)
-            betAmount = MIN_BET;
-        else if(trueCount < 1)
-            betAmount = MIN_BET * 2;
-        else if(trueCount < 2)
-            betAmount = 20;
-        else if(trueCount < 3)
-            betAmount = 30;
-        else if(trueCount < 4)
-            betAmount = 40;
-        else
-            betAmount = 50;
+        //determining the bet amount based on true count
+        betAmount = getBetAmount();
         
         //Keep track of the max bet
         if(betAmount > maxBet)
@@ -178,7 +172,7 @@ public class ClientBot implements IGerty{
         g.drawString(blackjack, X, Y+135);
         g.drawString(charlie, X, Y+150);
         g.drawString(runCount, X,Y+165);
-        g.drawString(truCount, X, Y+180);
+        //g.drawString(truCount, X, Y+180);
         
     }
 
@@ -232,15 +226,9 @@ public class ClientBot implements IGerty{
             }
         }
         
-        //Zen method for counting cards
-        if(card.isAce())
-            runningCount--;
-        else if(card.value() < 8)
-            runningCount++;
-        else if(card.isFace() || card.value() == 10)
-            runningCount = runningCount - 2;
-        else if(card.value() == 8 || card.value() == 9)
-            runningCount--;
+        //zenCount(card);
+        omegaTwo(card);
+        
         
         //getting the dealers upcard
         if((hid.getSeat() == Seat.DEALER) && (upCard == null))
@@ -343,5 +331,74 @@ public class ClientBot implements IGerty{
     public void push(Hid hid) {
         if(hid.getSeat() == Seat.YOU)
             pushes++;
+    }
+    
+    /**
+     * method to adjust zen count
+     */
+    private void zenCount(Card card){
+        //Zen method for counting cards
+        if(card.isAce())
+            runningCount--;
+        else if(card.value() < 8)
+            runningCount++;
+        else if(card.isFace() || card.value() == 10)
+            runningCount = runningCount - 2;
+        else if(card.value() == 8 || card.value() == 9)
+            runningCount--;
+        
+    }
+    
+    /**
+     * method to adjust Omega 2 Count
+     */
+    private void omegaTwo(Card card){
+        //Omega two method for counting cards
+        if(card.isAce())
+            runningCount = runningCount + 0;
+        else if(card.value() < 4)
+            runningCount++;
+        else if(card.value() > 3 && card.value() < 7)
+            runningCount = runningCount + 2;
+        else if(card.value() == 7)
+            runningCount++;
+        else if(card.value() == 8)
+            runningCount = runningCount + 0;
+        else if(card.value() == 9)
+            runningCount--;
+        else if(card.isFace() || card.value() == 10)
+            runningCount = runningCount - 2;
+        
+    }
+    
+    private int getBetAmount(){
+        if(zen){
+            if(trueCount < -1)
+                return MIN_BET;
+            else if(trueCount < 1)
+                return (MIN_BET * 2);
+            else if(trueCount < 2)
+                return 20;
+            else if(trueCount < 3)
+                return 30;
+            else if(trueCount < 4)
+                return 40;
+            else
+                return 50;
+        }else if(omega){
+            if(runningCount < -1)
+                return MIN_BET;
+            else if(runningCount < 1)
+                return (MIN_BET * 2);
+            else if(runningCount < 2)
+                return 20;
+            else if(runningCount < 3)
+                return 30;
+            else if(runningCount < 4)
+                return 40;
+            else
+                return 50;
+        }
+        return MIN_BET;
     }
 }

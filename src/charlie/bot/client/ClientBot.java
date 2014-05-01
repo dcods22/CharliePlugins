@@ -86,6 +86,9 @@ public class ClientBot implements IGerty{
         //determining the bet amount based on true count
         betAmount = getBetAmount();
         
+        if(betAmount > manager.getBankroll())
+            betAmount = (int) manager.getBankroll();
+        
         //Keep track of the max bet
         if(betAmount > maxBet)
             maxBet = betAmount;
@@ -172,7 +175,9 @@ public class ClientBot implements IGerty{
         g.drawString(blackjack, X, Y+135);
         g.drawString(charlie, X, Y+150);
         g.drawString(runCount, X,Y+165);
-        //g.drawString(truCount, X, Y+180);
+        
+        if(zen)
+            g.drawString(truCount, X, Y+180);
         
     }
 
@@ -199,6 +204,7 @@ public class ClientBot implements IGerty{
         //setting the true count
         shoeDecks = ((double) shoeSize) / 52.0;
         
+        //figuring out the true count
         trueCount = ((double) runningCount) / shoeDecks;
         handCount++;
     }
@@ -250,6 +256,7 @@ public class ClientBot implements IGerty{
         //reseting the counts
         runningCount = 0;
         trueCount = 0;
+        betAmount = MIN_BET;
     }
 
     /**
@@ -386,18 +393,12 @@ public class ClientBot implements IGerty{
             else
                 return 50;
         }else if(omega){
-            if(runningCount < -1)
+            if(runningCount > 0)
+                return (25 * runningCount);
+            else if(runningCount == -1 || runningCount == 0)
+                return 10;
+            else 
                 return MIN_BET;
-            else if(runningCount < 1)
-                return (MIN_BET * 2);
-            else if(runningCount < 2)
-                return 20;
-            else if(runningCount < 3)
-                return 30;
-            else if(runningCount < 4)
-                return 40;
-            else
-                return 50;
         }
         return MIN_BET;
     }

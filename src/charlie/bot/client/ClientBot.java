@@ -380,18 +380,12 @@ public class ClientBot implements IGerty{
     
     private int getBetAmount(){
         if(zen){
-            if(trueCount < -1)
+            if(trueCount > 0)
+                return (int) (25 * trueCount);
+            else if(trueCount == -1 || trueCount == 0)
+                return 10;
+            else 
                 return MIN_BET;
-            else if(trueCount < 1)
-                return (MIN_BET * 2);
-            else if(trueCount < 2)
-                return 20;
-            else if(trueCount < 3)
-                return 30;
-            else if(trueCount < 4)
-                return 40;
-            else
-                return 50;
         }else if(omega){
             if(runningCount > 0)
                 return (25 * runningCount);

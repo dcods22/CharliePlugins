@@ -98,7 +98,7 @@ public class ClientBot implements IGerty{
         totalBet = totalBet + betAmount;
         meanBet =  (double) totalBet / ((double) handCount + 1.0);
         
-        
+        //Make the bets
         makeBet(betAmount);
     }
 
@@ -389,31 +389,34 @@ public class ClientBot implements IGerty{
     }
     
     private void makeBet(int betAmount){
+        //set betAmount
+        int makeBet = betAmount;
         
         //Check if bet changed
         if(oldBet != betAmount){
             //make the bets
             manager.clearBet();
-            
+        
             //While loop to bet the right amount of chips
             while(betAmount > 0){
-                if(betAmount > 100){
+                if(betAmount >= 100){
                     manager.upBet(100);
                     betAmount = betAmount - 100;
                 }
-                else if(betAmount > 25){
+                else if(betAmount >= 25){
                     manager.upBet(25);
                     betAmount = betAmount - 25;
                 }
-                else{
+                else if(betAmount >= 5){
                     manager.upBet(5);
                     betAmount = betAmount - 5;
                 }
             }
         }
         
+        //set Old bet amount
+        oldBet = makeBet;
         //place the actual bet
-        courier.bet(betAmount, 0);
-        oldBet = betAmount;
+        courier.bet(makeBet, 0);
     }
 }

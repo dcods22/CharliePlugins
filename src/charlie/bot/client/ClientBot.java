@@ -99,17 +99,7 @@ public class ClientBot implements IGerty{
         meanBet =  (double) totalBet / ((double) handCount + 1.0);
         
         
-        if(oldBet != betAmount){
-            //make the bets
-            manager.clearBet();
-            
-            for(int i = 0; i < betAmount; i = i + 5)
-                manager.upBet(MIN_BET);
-        }
-        
-        //place the actual bet
-        courier.bet(betAmount, 0);
-        oldBet = betAmount;
+        makeBet(betAmount);
     }
 
     /**
@@ -218,6 +208,7 @@ public class ClientBot implements IGerty{
     @Override
     public void deal(Hid hid, Card card, int[] values) {
         
+        //create a hand
         if(hid.getSeat() == Seat.YOU){
             if(myHand == null){
                 myHand = new Hand(hid);
@@ -395,5 +386,34 @@ public class ClientBot implements IGerty{
                 return MIN_BET;
         }
         return MIN_BET;
+    }
+    
+    private void makeBet(int betAmount){
+        
+        //Check if bet changed
+        if(oldBet != betAmount){
+            //make the bets
+            manager.clearBet();
+            
+            //While loop to bet the right amount of chips
+            while(betAmount > 0){
+                if(betAmount > 100){
+                    manager.upBet(100);
+                    betAmount = betAmount - 100;
+                }
+                else if(betAmount > 25){
+                    manager.upBet(25);
+                    betAmount = betAmount - 25;
+                }
+                else{
+                    manager.upBet(5);
+                    betAmount = betAmount - 5;
+                }
+            }
+        }
+        
+        //place the actual bet
+        courier.bet(betAmount, 0);
+        oldBet = betAmount;
     }
 }

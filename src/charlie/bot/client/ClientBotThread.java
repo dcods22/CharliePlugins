@@ -56,9 +56,10 @@ public class ClientBotThread implements Runnable {
 
             //change advise if it is split
             if (advise == Play.SPLIT) {
-                advise = advisor.adviseTotalOnly(myHand, upCard);
+                advise = Play.HIT;
+                //advise = advisor.adviseTotalOnly(myHand, upCard);
             }
-            if ((advise == Play.DOUBLE_DOWN) && (myHand.size() > 2)) {
+            else if ((advise == Play.DOUBLE_DOWN) && (myHand.size() > 2)) {
                 advise = Play.HIT;
             }
 
